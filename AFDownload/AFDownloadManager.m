@@ -60,7 +60,7 @@ static AFDownloadManager* _manager;
     return fileName;
 }
 
-- (void)buildNewRequestWithURL:(NSString *)url shouldResume:(BOOL)shouldResume
+- (void)buildNewRequestWithURL:(NSString *)url shouldResume:(BOOL)shouldResume isExcutableInBackground:(BOOL)isExcutableInBackground
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
     NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:[self fileNameForResourceAtURL:url]];
@@ -88,11 +88,23 @@ static AFDownloadManager* _manager;
         NSLog(@"Error: %@", error);
     }];
     
-    [operation setShouldExecuteAsInfiniteBackgroundTaskWithExpirationHandler:^(void)
-     {
-         NSLog(@"BackgroundTaskWithExpirationHandler at progress");
-         
-     }];
+    if (isExcutableInBackground)
+    {
+        [operation setShouldExecuteAsInfiniteBackgroundTaskWithExpirationHandler:^BOOL(void)
+         {
+             NSLog(@"BackgroundTaskWithExpirationHandler infinite till operation done");
+             if ([array indexOfObject:operation.request.URL.absoluteString] == NSNotFound)
+                 return YES;
+             return NO;
+         }];
+    }
+    else
+    {
+        [operation setShouldExecuteAsBackgroundTaskWithExpirationHandler:^void
+         {
+             NSLog(@"BackgroundTaskWithExpirationHandler");
+         }];
+    }
     
     [self.client enqueueHTTPRequestOperation:operation];
     
@@ -116,6 +128,8 @@ static AFDownloadManager* _manager;
     
     for (NSString *requestURL in [[NSUserDefaults standardUserDefaults] objectForKey:USERDEFAULT_DOWNLOADS])
     {
+        if ([array indexOfObject:requestURL]!=NSNotFound) continue;
+        
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:requestURL]];
         
         AFDownloadRequestOperation *operation = [[AFDownloadRequestOperation alloc] initWithRequest:request targetPath:[self fileNameForResourceAtURL:request.URL.absoluteString] shouldResume:YES];
@@ -133,9 +147,9 @@ static AFDownloadManager* _manager;
             NSLog(@"Error: %@", error);
         }];
         
-        [operation setShouldExecuteAsInfiniteBackgroundTaskWithExpirationHandler:^(void)
+        [operation setShouldExecuteAsBackgroundTaskWithExpirationHandler:^(void)
          {
-             NSLog(@"BackgroundTaskWithExpirationHandler at progress");
+             NSLog(@"BackgroundTaskWithExpirationHandler");
          }];
         
         [self.client enqueueHTTPRequestOperation:operation];
@@ -145,6 +159,11 @@ static AFDownloadManager* _manager;
         //whether to start an operation might be controlled by a viewController
     
     }
+}
+
+- (NSArray*)onGoingOperations
+{
+    return self.operations;
 }
 
 - (void)startAllDownloads

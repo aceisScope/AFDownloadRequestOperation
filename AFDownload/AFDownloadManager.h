@@ -17,9 +17,17 @@
 
 @property (nonatomic, strong) NSMutableArray *operations;
 
+
 + (id)sharedManager;
+
+//all on-going downloads
+- (NSArray*)onGoingOperations;
+
+//this is the method to invoke all uncompleted download recorded in UserDefault, called when app is launched
 - (void)invokeAllSuspendedDownloadRequests;
-- (void)buildNewRequestWithURL:(NSString *)urlRequest shouldResume:(BOOL)shouldResume;
+
+//build up a new download
+- (void)buildNewRequestWithURL:(NSString *)url shouldResume:(BOOL)shouldResume isExcutableInBackground:(BOOL)isExcutableInBackground;
 
 - (void)startAllDownloads;
 - (void)cancelAllDownloads;

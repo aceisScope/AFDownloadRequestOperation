@@ -64,8 +64,8 @@
     [operation start];
      */
     
-    [[AFDownloadManager sharedManager] buildNewRequestWithURL:@"http://mov.bn.netease.com/movieMP4/2011/6/E/7/S75LE7DE7.mp4" shouldResume:YES];
-    [[AFDownloadManager sharedManager] buildNewRequestWithURL:@"http://mov.bn.netease.com/movieMP4/2011/3/1/2/S6UNPKJ12.mp4" shouldResume:YES];
+    [[AFDownloadManager sharedManager] buildNewRequestWithURL:@"http://mov.bn.netease.com/movieMP4/2011/6/E/7/S75LE7DE7.mp4" shouldResume:YES isExcutableInBackground:YES];
+    [[AFDownloadManager sharedManager] buildNewRequestWithURL:@"http://mov.bn.netease.com/movieMP4/2011/3/1/2/S6UNPKJ12.mp4" shouldResume:YES isExcutableInBackground:YES];
     int i = 0;
     
     for (AFDownloadRequestOperation *operation in [[AFDownloadManager sharedManager] operations])
@@ -81,6 +81,13 @@
         
         i++;
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backToForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
+}
+
+- (void)backToForeground
+{
+    NSLog(@"%@",[[AFDownloadManager sharedManager] onGoingOperations]);
 }
 
 - (void)didReceiveMemoryWarning

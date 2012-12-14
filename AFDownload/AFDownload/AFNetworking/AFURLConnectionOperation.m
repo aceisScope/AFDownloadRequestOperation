@@ -276,9 +276,10 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
     [self.lock unlock];
 }
 
-- (void)setShouldExecuteAsInfiniteBackgroundTaskWithExpirationHandler:(void (^)(void))handler {
+- (void)setShouldExecuteAsInfiniteBackgroundTaskWithExpirationHandler:(BOOL (^)(void))handler {
     [self.lock lock];
-    if (!self.backgroundTaskIdentifier) {
+    if (!self.backgroundTaskIdentifier)
+    {
         UIApplication *application = [UIApplication sharedApplication];
         __weak __typeof(&*self)weakSelf = self;
         
@@ -287,8 +288,10 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
             
             __strong __typeof(&*weakSelf)strongSelf = weakSelf;
             
+            __block BOOL done = NO;
+            
             if (handler) {
-                handler();
+               done  = handler();
             }
             
             if (strongSelf) {
@@ -296,7 +299,8 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
                 [application endBackgroundTask:strongSelf.backgroundTaskIdentifier];
                 strongSelf.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
                 
-                strongSelf.backgroundTaskIdentifier = [application beginBackgroundTaskWithExpirationHandler:expirationHandler];
+                if (!done) //this connection, maybe a download, is not completed yet
+                    strongSelf.backgroundTaskIdentifier = [application beginBackgroundTaskWithExpirationHandler:expirationHandler];
                 
             }
 

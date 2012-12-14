@@ -191,8 +191,8 @@
  */
 #if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
 - (void)setShouldExecuteAsBackgroundTaskWithExpirationHandler:(void (^)(void))handler;
-//use recursive handler to make an infinite background task
-- (void)setShouldExecuteAsInfiniteBackgroundTaskWithExpirationHandler:(void (^)(void))handler;
+//use recursive handler to excute an infinite background task, not recommended
+- (void)setShouldExecuteAsInfiniteBackgroundTaskWithExpirationHandler:(BOOL (^)(void))handler;
 #endif
 
 ///---------------------------------
