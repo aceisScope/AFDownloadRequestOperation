@@ -299,7 +299,7 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
                 [application endBackgroundTask:strongSelf.backgroundTaskIdentifier];
                 strongSelf.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
                 
-                if (!done) //this connection, maybe a download, is not completed yet
+                if (!done) //this connection, maybe a download, is not completed yet, restart background task
                     strongSelf.backgroundTaskIdentifier = [application beginBackgroundTaskWithExpirationHandler:expirationHandler];
                 
             }

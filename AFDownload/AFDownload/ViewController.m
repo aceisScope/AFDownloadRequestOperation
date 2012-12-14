@@ -36,49 +36,21 @@
     self.label2.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:self.label2];
     
-    /*
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://mov.bn.netease.com/movieMP4/2011/6/E/7/S75LE7DE7.mp4"]];
-
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"algorithm.mp4"];
-
-    AFDownloadRequestOperation *operation = [[AFDownloadRequestOperation alloc] initWithRequest:request targetPath:path shouldResume:YES];
-    
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"Successfully downloaded file to %@", path);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-    }];
-    
-    [operation setShouldExecuteAsInfiniteBackgroundTaskWithExpirationHandler:^(void)
-    {
-        NSLog(@"BackgroundTaskWithExpirationHandler at progress %@",self.label.text);
-        
-    }];
-    
-    [operation setProgressiveDownloadProgressBlock:^(NSInteger bytesRead, long long totalBytesRead, long long totalBytesExpected, long long totalBytesReadForFile, long long totalBytesExpectedToReadForFile)
-    {
-        self.label.text = [NSString stringWithFormat:@"%f",totalBytesReadForFile/(float)totalBytesExpectedToReadForFile];
-    }];
-    
-    [operation start];
-     */
     
     [[AFDownloadManager sharedManager] buildNewRequestWithURL:@"http://mov.bn.netease.com/movieMP4/2011/6/E/7/S75LE7DE7.mp4" shouldResume:YES isExcutableInBackground:YES];
     [[AFDownloadManager sharedManager] buildNewRequestWithURL:@"http://mov.bn.netease.com/movieMP4/2011/3/1/2/S6UNPKJ12.mp4" shouldResume:YES isExcutableInBackground:YES];
-    int i = 0;
     
-    for (AFDownloadRequestOperation *operation in [[AFDownloadManager sharedManager] operations])
+    int i = 0;
+    for (AFDownloadRequestOperation *operation in [[AFDownloadManager sharedManager] onGoingOperations])
     {
         [operation setProgressiveDownloadProgressBlock:^(NSInteger bytesRead, long long totalBytesRead, long long totalBytesExpected, long long totalBytesReadForFile, long long totalBytesExpectedToReadForFile)
          {
              if (i == 0)
-                 self.label1.text = [NSString stringWithFormat:@"%f",totalBytesReadForFile/(float)totalBytesExpectedToReadForFile];
+                 [self.label1 performSelector:@selector(setText:) onThread:[NSThread mainThread] withObject:[NSString stringWithFormat:@"%f",totalBytesReadForFile/(float)totalBytesExpectedToReadForFile] waitUntilDone:YES];
              else if (i == 1)
-                 self.label2.text = [NSString stringWithFormat:@"%f",totalBytesReadForFile/(float)totalBytesExpectedToReadForFile];
+                 [self.label2 performSelector:@selector(setText:) onThread:[NSThread mainThread] withObject:[NSString stringWithFormat:@"%f",totalBytesReadForFile/(float)totalBytesExpectedToReadForFile] waitUntilDone:YES];
          }];
         [operation start];
-        
         i++;
     }
     
@@ -87,7 +59,7 @@
 
 - (void)backToForeground
 {
-    NSLog(@"%@",[[AFDownloadManager sharedManager] onGoingOperations]);
+    NSLog(@"app back to foreground: %@",[[AFDownloadManager sharedManager] onGoingOperations]);
 }
 
 - (void)didReceiveMemoryWarning

@@ -23,10 +23,13 @@
 //all on-going downloads
 - (NSArray*)onGoingOperations;
 
-//this is the method to invoke all uncompleted download recorded in UserDefault, called when app is launched
+//this is the method to invoke all uncompleted download recorded in UserDefault that are due to termination of 600s background task, normally should be called when app is launched (a new app lifecycle, onGoingOperations is destroyed)
 - (void)invokeAllSuspendedDownloadRequests;
 
 //build up a new download
+/**
+ @param isExcutableInBackground:YES this will execute an tricky infinite background task until download is completed. not recommended.
+ */
 - (void)buildNewRequestWithURL:(NSString *)url shouldResume:(BOOL)shouldResume isExcutableInBackground:(BOOL)isExcutableInBackground;
 
 - (void)startAllDownloads;

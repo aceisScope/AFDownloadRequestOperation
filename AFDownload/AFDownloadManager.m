@@ -86,16 +86,23 @@ static AFDownloadManager* _manager;
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
+        [self.operations removeObject:operation];
     }];
     
     if (isExcutableInBackground)
     {
         [operation setShouldExecuteAsInfiniteBackgroundTaskWithExpirationHandler:^BOOL(void)
          {
-             NSLog(@"BackgroundTaskWithExpirationHandler infinite till operation done");
              if ([array indexOfObject:operation.request.URL.absoluteString] == NSNotFound)
+             {
+                 NSLog(@"BackgroundTaskWithExpirationHandler infinite till operation done");
                  return YES;
-             return NO;
+             }
+             else
+             {
+                 NSLog(@"BackgroundTaskWithExpirationHandler finite when operation is done");
+                 return NO;
+             }
          }];
     }
     else
@@ -145,6 +152,7 @@ static AFDownloadManager* _manager;
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Error: %@", error);
+            [self.operations removeObject:operation];
         }];
         
         [operation setShouldExecuteAsBackgroundTaskWithExpirationHandler:^(void)
