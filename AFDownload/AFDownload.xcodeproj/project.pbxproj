@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04357002167ABD6F00257986 /* AFDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 04357001167ABD6F00257986 /* AFDownloadManager.m */; };
 		04E3BD7816797B0A00E5FC4D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04E3BD7716797B0A00E5FC4D /* UIKit.framework */; };
 		04E3BD7A16797B0A00E5FC4D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04E3BD7916797B0A00E5FC4D /* Foundation.framework */; };
 		04E3BD7C16797B0A00E5FC4D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04E3BD7B16797B0A00E5FC4D /* CoreGraphics.framework */; };
@@ -31,6 +32,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		04357000167ABD6F00257986 /* AFDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFDownloadManager.h; sourceTree = "<group>"; };
+		04357001167ABD6F00257986 /* AFDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFDownloadManager.m; sourceTree = "<group>"; };
 		04E3BD7316797B0A00E5FC4D /* AFDownload.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AFDownload.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04E3BD7716797B0A00E5FC4D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		04E3BD7916797B0A00E5FC4D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -87,6 +90,8 @@
 		04E3BD6816797B0A00E5FC4D = {
 			isa = PBXGroup;
 			children = (
+				04357000167ABD6F00257986 /* AFDownloadManager.h */,
+				04357001167ABD6F00257986 /* AFDownloadManager.m */,
 				04E3BD7D16797B0A00E5FC4D /* AFDownload */,
 				04E3BD7616797B0A00E5FC4D /* Frameworks */,
 				04E3BD7416797B0A00E5FC4D /* Products */,
@@ -246,6 +251,7 @@
 				04E3BDBD16797CD300E5FC4D /* AFXMLRequestOperation.m in Sources */,
 				04E3BDBE16797CD300E5FC4D /* UIImageView+AFNetworking.m in Sources */,
 				04E3BDD01679E29F00E5FC4D /* AFDownloadRequestOperation.m in Sources */,
+				04357002167ABD6F00257986 /* AFDownloadManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

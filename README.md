@@ -1,3 +1,9 @@
+AFDownloadManager
+==========================
+
+A class based on AFDownloadRequestOperation. This is only a simple wrapper for multiple download with AFNetworking. 
+
+
 AFDownloadRequestOperation
 ==========================
 
