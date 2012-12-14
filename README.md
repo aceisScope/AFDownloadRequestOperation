@@ -6,7 +6,9 @@ NOTICE: THIS CLASS IS BASICALLY FOR PERSONAL USE AND I CAN'T GUARANTEE ITS FLAWL
 A class based on [AFDownloadRequestOperation](https://github.com/steipete/AFDownloadRequestOperation). This is only a simple wrapper for multiple download with AFNetworking. 
 
 ``` objective-c
+
     - (void)buildNewRequestWithURL:(NSString *)url shouldResume:(BOOL)shouldResume isExcutableInBackground:(BOOL)isExcutableInBackground
+    
 ```
 Above is the method to build up a resumable download request, and decide whether to execute an infinite background task until the download is completed. But I won't personally recommend that.
 
@@ -20,6 +22,8 @@ In order to perform infinite background task, a ```- (void)setShouldExecuteAsInf
  
 2. If an app is in background and terminated by 600s, so next time when app is launched, a new lifecycle starts, ```- (void)invokeAllSuspendedDownloadRequests;``` will invoke the records in UserDefaults and build up new download operations with them.
 
+Below is the original Readme of AFDownloadRequestOperation
+==========================
 ### AFDownloadRequestOperation
 
 A progressive download operation for AFNetworking. I wrote this to support large PDF downloads in [my iOS PDF framework PSPDFKit](http://pspdfkit.com), but it works for any file type.
