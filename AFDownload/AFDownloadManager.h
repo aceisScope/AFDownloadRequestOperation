@@ -32,7 +32,11 @@
  */
 - (void)buildNewRequestWithURL:(NSString *)url shouldResume:(BOOL)shouldResume isExcutableInBackground:(BOOL)isExcutableInBackground;
 
-- (void)startAllDownloads;
+- (void)resumeAllDownloads;
 - (void)cancelAllDownloads;
+- (void)pauseAllDownloads;
+- (void)resumeDownloadAtIndex:(int)index;
+- (void)pauseDownloadAtIndex:(int)index;
+- (void)cancelDownloadAtIndex:(int)index;
 
 @end

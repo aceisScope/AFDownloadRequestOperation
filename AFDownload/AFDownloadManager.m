@@ -174,11 +174,19 @@ static AFDownloadManager* _manager;
     return self.operations;
 }
 
-- (void)startAllDownloads
+- (void)pauseAllDownloads
 {
     for (AFDownloadRequestOperation *operation in self.operations)
     {
-        [operation start];
+        [operation pause];
+    }
+}
+
+- (void)resumeAllDownloads
+{
+    for (AFDownloadRequestOperation *operation in self.operations)
+    {
+        [operation resume];
     }
 }
 
@@ -190,6 +198,24 @@ static AFDownloadManager* _manager;
     }
     
     [self.operations removeAllObjects];
+}
+
+
+- (void)resumeDownloadAtIndex:(int)index
+{
+    [(AFDownloadRequestOperation *)self.operations[index] resume];
+}
+
+
+- (void)pauseDownloadAtIndex:(int)index
+{
+    [(AFDownloadRequestOperation *)self.operations[index] pause];
+}
+
+
+- (void)cancelDownloadAtIndex:(int)index
+{
+    [(AFDownloadRequestOperation *)self.operations[index] cancel];
 }
 
 @end
