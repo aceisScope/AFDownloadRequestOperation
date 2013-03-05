@@ -91,9 +91,10 @@ static AFDownloadManager* _manager;
     
     if (isExcutableInBackground)
     {
-        [operation setShouldExecuteAsInfiniteBackgroundTaskWithExpirationHandler:^BOOL(void)
+        __weak AFDownloadRequestOperation *_operation = operation;
+        [_operation setShouldExecuteAsInfiniteBackgroundTaskWithExpirationHandler:^BOOL(void)
          {
-             if ([array indexOfObject:operation.request.URL.absoluteString] == NSNotFound)
+             if ([array indexOfObject:_operation.request.URL.absoluteString] == NSNotFound)
              {
                  NSLog(@"BackgroundTaskWithExpirationHandler infinite till operation done");
                  return YES;
