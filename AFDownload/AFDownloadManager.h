@@ -30,7 +30,7 @@
 /**
  @param isExcutableInBackground:YES this will execute an tricky infinite background task until download is completed. not recommended.
  */
-- (void)buildNewRequestWithURL:(NSString *)url shouldResume:(BOOL)shouldResume isExcutableInBackground:(BOOL)isExcutableInBackground;
+- (void)buildNewRequestWithURL:(NSString *)url shouldResume:(BOOL)shouldResume isExcutableInBackground:(BOOL)isExcutableInBackground withCompletionBlock:(void (^)(void))completion andFailureBlock:(void (^)(void))failure;
 
 - (void)resumeAllDownloads;
 - (void)cancelAllDownloads;

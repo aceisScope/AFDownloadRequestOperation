@@ -60,14 +60,14 @@ static AFDownloadManager* _manager;
     return fileName;
 }
 
-- (void)buildNewRequestWithURL:(NSString *)url shouldResume:(BOOL)shouldResume isExcutableInBackground:(BOOL)isExcutableInBackground
+- (void)buildNewRequestWithURL:(NSString *)url shouldResume:(BOOL)shouldResume isExcutableInBackground:(BOOL)isExcutableInBackground withCompletionBlock:(void (^)(void))completion andFailureBlock:(void (^)(void))failure
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
     NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:[self fileNameForResourceAtURL:url]];
     
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     
-    //store the new request
+    //store the new request url
     NSMutableArray *array = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:USERDEFAULT_DOWNLOADS]];
     [array addObject:url];
     [[NSUserDefaults standardUserDefaults] setObject:array forKey:USERDEFAULT_DOWNLOADS];
@@ -84,12 +84,23 @@ static AFDownloadManager* _manager;
         [[NSUserDefaults standardUserDefaults] synchronize];
         [self.operations removeObject:operation];
         
+        //completionblock
+        if (completion)
+        {
+            completion();
+        }
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
         [self.operations removeObject:operation];
+        
+        if (failure)
+        {
+            failure();
+        }
     }];
     
-    if (isExcutableInBackground)
+    if (isExcutableInBackground) //highly unrecommended
     {
         __weak AFDownloadRequestOperation *_operation = operation;
         [_operation setShouldExecuteAsInfiniteBackgroundTaskWithExpirationHandler:^BOOL(void)
